@@ -5,9 +5,10 @@ import Container from '@/components/Container/Container';
 import Heading from '@/components/Heading/Heading';
 
 import css from './page.module.css';
+import { useCurrencyStore } from '@/lib/stores/currencyStore';
 
 export default function Home() {
-  const isError = false;
+  const { isError } = useCurrencyStore();
 
   return (
     <main className={css.main}>
