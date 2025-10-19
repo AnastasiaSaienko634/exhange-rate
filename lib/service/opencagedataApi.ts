@@ -1,15 +1,21 @@
 import axios from 'axios';
 
-export const getUserInfo = async ({ latitude, longitude }) => {
-  const apiKey = process.env.NEXT_PUBLIC_OPENCAGE_API_KEY;
-  const urlPosition = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}`;
+const BASE_URL = 'https://api.opencagedata.com/geocode/v1/json';
 
-  const { data } = await axios.get(urlPosition, {
-    params: {
-      key: apiKey,
-      language: 'en',
-    },
-  });
+export async function getCurrencyByCoords(lat: number, long: number): Promise<string> {
+  try {
+    const apiKey = process.env.NEXT_PUBLIC_OPENCAGE_API_KEY;
+    const { data } = await axios.get(BASE_URL, {
+      params: {
+        q: `${lat}+${long}`,
+        key: apiKey,
+        language: 'en',
+      },
+    });
 
-  return data;
-};
+    return data.results[0].annotations.currency.iso_code;
+  } catch (error) {
+    console.error('Cannot get currency by coordinates:', error);
+    return 'USD'; // fallback
+  }
+}

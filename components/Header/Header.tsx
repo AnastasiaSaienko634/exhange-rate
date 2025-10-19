@@ -3,16 +3,18 @@
 import Link from 'next/link';
 import { MdCurrencyExchange } from 'react-icons/md';
 import { usePathname } from 'next/navigation';
-
+import { useCurrencyStore } from '@/lib/store/currencyStore';
 import styles from './Header.module.css';
 
 export default function Header() {
   const pathname = usePathname();
+  const { baseCurrency, setBaseCurrency } = useCurrencyStore();
 
   return (
     <header className={styles.header}>
       <div className={styles.wrapper}>
         <MdCurrencyExchange className={styles.logo} />
+
         <nav>
           <ul className={styles.nav}>
             <li>
@@ -27,9 +29,17 @@ export default function Header() {
             </li>
           </ul>
         </nav>
+    <select
+          className={styles.select}
+          value={baseCurrency}
+          onChange={(e) => setBaseCurrency(e.target.value)}
+        >
+          <option value="UAH">UAH</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+        </select>
       </div>
-
-      {/* ✔ Add base currency here !!! */}
     </header>
   );
 }
